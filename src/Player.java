@@ -5,7 +5,7 @@ public class Player {
     String nome;
     char[][] map = new char[10][10];
 
-    public void setName(String nome){
+    public void setName(String nome){ //define o nome do jogador
         this.nome = nome;
     }
 
@@ -187,16 +187,16 @@ public class Player {
         return true;
     }
 
-    public void setMapRandom(){
+    public void setMapRandom(){ // preenche aleatoriamente o mapa
         Random aleatorio = new Random();
-        int navioGG = 1;
+        int navioGG = 1; //numero de barcos para atribuir
         int navioG = 2;
         int navioM = 3;
         int navioP = 4;
         do {
-            if (navioGG!=0){
-                if (setNavioGG(aleatorio.nextInt(1,9), aleatorio.nextInt(1,9), aleatorio.nextInt(1,2))){
-                    navioGG--;
+            if (navioGG!=0){ // se ainda tiver barcos disponiveis
+                if (setNavioGG(aleatorio.nextInt(1,9), aleatorio.nextInt(1,9), aleatorio.nextInt(1,2))){ // se a atribuicao do barco funcionar, retorna true
+                    navioGG--; // diminui 1 barco dos disponiveis
                 }
             }
             if (navioG!=0){
@@ -214,13 +214,13 @@ public class Player {
                     navioP--;
                 }
             }
-        }while (navioGG != 0 || navioG != 0 || navioM != 0 || navioP != 0);
+        }while (navioGG != 0 || navioG != 0 || navioM != 0 || navioP != 0); // enquanto ainda tiver barcos para atribuir
 
     }
 
-    public void getMap(){
+    public void getMap(){ // imprime o mapa atualizado do jogador
         System.out.println("    0   1   2   3   4   5   6   7   8   9  ");
-        int count= 0;
+        int count= 0; //contador para ver se tem todos os 20 barcos no mapa || 🚨🚨 está atribuindo mais que 20 🚨🚨
         for (int l = 0; l<map.length; l++){
             for (int c = 0; c<map[0].length;c++){
                 if (c==0){

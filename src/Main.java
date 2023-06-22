@@ -10,23 +10,22 @@ public class Main {
         char modo = ler.next().charAt(0);
         switch (modo){
             case 's','S' -> {
-                int navioGG = 1;
+                int navioGG = 1; //numero de barcos para atribuir
                 int navioG = 2;
                 int navioM = 3;
                 int navioP = 4;
                 int linha, coluna, posicao;
-                int flagEnd;
+                int flagEnd; // flag para parar de repetir o laço
                 System.out.println("------ MODO SINGLE PLAYER ------ ");
-                Player player1 = new Player();
-                Player bot = new Player();
+                Player player1 = new Player(); //cria o jogador
+                Player bot = new Player(); // cria o bot
                 bot.setName("Bot");
-                bot.setAgua();
-                bot.setMapRandom();
+                bot.setAgua(); // preenche os espaco de agua do bot
+                bot.setMapRandom(); // preenche aleatorimante o mapa
                 System.out.print("Informe seu nome: ");
                 String nome = ler.next();
                 player1.setName(nome);
-                player1.setAgua();
-
+                player1.setAgua(); // preenche os espaco de agua do jogador
                 System.out.println("Escolha a forma de posicionar os navios");
                 System.out.println("Manual [M]  ||  Automático [A]");
                 System.out.println("Selecione: ");
@@ -46,7 +45,7 @@ public class Main {
                                 case 4 ->{
                                     flagEnd = 0;
                                     do {
-                                        if (navioGG!=0) {
+                                        if (navioGG!=0) { // verifica se ainda tem barcos disponiveis
                                             System.out.println();
                                             System.out.println("Escolha a localização do navio");
                                             player1.getMap();
@@ -58,18 +57,18 @@ public class Main {
                                             System.out.println("Horizontal [1]  ||  Vertical [2]");
                                             System.out.print("Selecione: ");
                                             posicao = ler.nextInt();
-                                            if (player1.setNavioGG(linha, coluna, posicao)) {
-                                                navioGG--;
-                                                flagEnd = 1;
-                                            } else {
+                                            if (player1.setNavioGG(linha, coluna, posicao)) { // se atribuir corretamente retorna true
+                                                navioGG--; // diminui os barcos disponiveis
+                                                flagEnd = 1; // encerra o loop
+                                            } else { // se houver algum erro retorna false e retoma o loop
                                                 System.out.println("Localização Inválida!!");
-                                                Thread.sleep(1000);
+                                                Thread.sleep(1000); // pausa o prompt
                                             }
                                         }
                                         else{
-                                            System.out.println("Você não tem mais navios disponíveis!");
+                                            System.out.println("Você não tem mais navios disponíveis!"); // se n houver barcos disponiveis retoma o loop
                                             flagEnd = 1;
-                                            Thread.sleep(1000);
+                                            Thread.sleep(1000); // pausa o prompt
                                         }
                                     }while (flagEnd == 0);
                                 }
@@ -165,13 +164,13 @@ public class Main {
                                 }
                                 default -> System.out.println("opção Inválida!");
                             }
-                        }while (navioGG != 0 || navioG != 0 || navioM != 0 || navioP != 0);
-                        bot.getMap();
+                        }while (navioGG != 0 || navioG != 0 || navioM != 0 || navioP != 0); // se nao houver mais barcos disponiveis encerra a atribuicao
+                        bot.getMap(); // provisorio
                     }
                     case 'a','A' -> {
-                        player1.setMapRandom();
-                        player1.getMap();
-                        bot.getMap();
+                        player1.setMapRandom(); //define aleatoriamente o mapa do jogador
+                        player1.getMap(); // provisorio
+                        bot.getMap(); // provisorio
                     }
                 }
 
