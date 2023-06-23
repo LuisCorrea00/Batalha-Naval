@@ -38,9 +38,13 @@ public class Main {
         }while (!flagEnd);
     }
 
+    public static void selecionarAtaque(Player player){
+        
+    }
+    
     public static void main(String[] args) throws InterruptedException {
         Scanner ler = new Scanner(System.in);
-        System.out.println("------ BATALHA NAVAL ------ ");
+        System.out.println("\t------ BATALHA NAVAL ------ ");
         System.out.println("Escolha o modo de jogo:");
         System.out.println("Single player [S]  ||  Multiplayer [M]");
         System.out.print("Selecione: ");
@@ -51,7 +55,7 @@ public class Main {
                 int navioG = 2;
                 int navioM = 3;
                 int navioP = 4;
-                System.out.println("------ MODO SINGLE PLAYER ------ ");
+                System.out.println("\t------ MODO SINGLE PLAYER ------ ");
                 Player player1 = new Player(); //cria o jogador
                 Player bot = new Player(); // cria o bot
                 bot.setName("Bot");
@@ -63,7 +67,7 @@ public class Main {
                 player1.setAgua(); // preenche os espaco de agua do jogador
                 System.out.println("Escolha a forma de posicionar os navios");
                 System.out.println("Manual [M]  ||  Automático [A]");
-                System.out.println("Selecione: ");
+                System.out.print("Selecione: ");
                 int opcao = ler.next().charAt(0);
                 switch (opcao){
                     case 'm', 'M' ->{ // manualmente
@@ -104,11 +108,10 @@ public class Main {
 //                        bot.getMap(); // provisorio
                     }
                 }
-                System.out.println("------ HORA DE ATACAR ------");
-                System.out.println();
-                System.out.println("------ SEU MAPA ------");
+                System.out.println("\t------ HORA DE ATACAR ------");
                 player1.getMap();
-
+                player1.atacar(bot);
+                bot.atacarRandom (player1);  
             }
             case 'm','M' -> {
 
