@@ -21,59 +21,48 @@ public class Player {
         }
     }
 
-    public boolean setNavio(int linha, int coluna, int posicao, int navio){ //define navio no mapa
+    public boolean setNavio(int linha, int coluna, int posicao, int tipoNavio) { //define navio no mapa
         int colInicio = coluna;
         int linInicio = linha;
-        for (int l=0, tamanho = 1; l<map.length; l++){
+        int atribuidos = 0;
+        for (int l=0; l<map.length; l++){
             for (int c=0; c<map[0].length;c++){
                 if (l==linha && c==coluna){ //se a linha e coluna definidas pelo usuario coincidem
                     if (posicao == 1){ //se o usuario escolheu horizontal
-                        if(colInicio+navio <= map.length){ //verifica se tem espaco para alocar o navio na matriz
-                            if (map[l][c] != 'B') { //verifica se tem um navio ocupando o espaco
-                                map[l][c] = 'B'; //define o navio na matriz 
-//                                System.out.println(navio);
-                                if (tamanho < navio) { //verifica se ainda deve definir o navio no mapa dependendo do tamanho dele
-                                    coluna++;
-                                    tamanho++;
-                                }
+                        if(colInicio+tipoNavio-1 <= map.length){ //verifica se tem espaco para alocar o navio na matriz
+                            for (int i = colInicio; i < colInicio+tipoNavio; i++){
+                                if (map[l][i] == 'B') return false;
                             }
-                            else{
-                                return false;
+                            if (atribuidos < tipoNavio) { //verifica se ainda deve definir o navio no mapa dependendo do tamanho dele
+                                map[l][c] = 'B'; //define o navio na matriz
+                                coluna++;
+                                atribuidos++;
+                                System.out.println(c);
+                                System.out.println(tipoNavio);
                             }
-                        }
-                        else{
-                            return false; //se n tiver espaco encerra
-                        }
+                        } else return false; //se n tiver espaco encerra
                     }
                     else if (posicao == 2) { //se o usuario escolheu vertical
-                        if(linInicio+navio <= map.length){ //verifica se tem espaco para alocar o navio na matriz
+                        if(linInicio+tipoNavio-1 <= map.length){ //verifica se tem espaco para alocar o navio na matriz
                             if (map[l][c] != 'B') { //verifica se tem um navio ocupando o espaco
-                                map[l][c] = 'B'; //define o navio na matriz
-                                if (tamanho < navio) { //verifica se ainda deve definir o navio no mapa dependendo do tamanho dele
+                                if (atribuidos < tipoNavio) { //verifica se ainda deve definir o navio no mapa dependendo do tamanho dele
+                                    map[l][c] = 'B'; //define o navio na matriz
                                     linha++;
-                                    tamanho++;
+                                    atribuidos++;
+                                    System.out.println(tipoNavio);
                                 }
-                            }
-                            else{
-                                return false;
-                            }
-                        }
-                        else{
-                            return false; //se n tiver espaco encerra
-                        }
+                            } else return false;
+                        } else return false; //se n tiver espaco encerra
                     }
                 }
             }
-        }
-        return true;
+        } return true;
     }
+
 
     public void setMapRandom(){ // preenche aleatoriamente o mapa
         Random aleatorio = new Random();
-        int navioGG = 1; //numero de barcos para atribuir
-        int navioG = 2;
-        int navioM = 3;
-        int navioP = 4;
+        int navioGG = 1, navioG = 2, navioM = 3, navioP = 4; //numero de barcos para atribuir
         do {
             if (navioGG!=0){ // se ainda tiver barcos disponiveis
                 if (setNavio(aleatorio.nextInt(10), aleatorio.nextInt(10), aleatorio.nextInt(2)+1,4)){ // se a atribuicao do barco funcionar, retorna true
@@ -96,7 +85,6 @@ public class Player {
                 }
             }
         }while (navioGG != 0 || navioG != 0 || navioM != 0 || navioP != 0); // enquanto ainda tiver barcos para atribuir
-
     }
 
     public void getMap(){ // imprime o mapa atualizado do jogador
@@ -146,57 +134,50 @@ public class Player {
         }
     }
     
-    public void atacar(Player enemy) throws InterruptedException{
+    public boolean atacar(Player enemy) throws InterruptedException{
         boolean flagWin = false;
         int colunaSelec = 0;
         int countBarco = 0;
         Scanner ler = new Scanner(System.in);
-                do{
-                    System.out.println();
-                    System.out.println("\t------ MAPA "+nome+ "------");
-                    System.out.println("");
-                    getMap();
-                    System.out.println("\t------ MAPA "+enemy.nome+" ------");
-                    enemy.hideMap();
-                    System.out.println("");
-                    System.out.println("ATACAR");
-                    System.out.print("Linha: ");
-                    int linha = ler.nextInt();
-                    System.out.print("Coluna: ");
-                    char colunaChar = ler.next().charAt(0);
-                    colunaChar = Character.toUpperCase(colunaChar);
-                    for (int i = 0; i<enemy.coluna.length;i++){
-                        if (colunaChar == enemy.coluna[i]) colunaSelec = i;
+        System.out.println();
+        System.out.println("\t------ MAPA "+nome+ "------");
+        getMap();
+        System.out.println("\t------ MAPA "+enemy.nome+" ------");
+        enemy.hideMap();
+        System.out.println("ATACAR");
+        System.out.print("Linha: ");
+        int linha = ler.nextInt();
+        System.out.print("Coluna: ");
+        char colunaChar = ler.next().charAt(0);
+        colunaChar = Character.toUpperCase(colunaChar);
+        for (int i = 0; i<enemy.coluna.length;i++){
+            if (colunaChar == enemy.coluna[i]) colunaSelec = i;
+        }
+        for(int l = 0; l<enemy.map.length;l++){
+            for(int c = 0; c<enemy.map[0].length;c++){
+                if(l == linha && c == colunaSelec){
+                    if(enemy.map[l][c] == '~'){
+                        enemy.map[l][c] = 'X';
+                        System.out.println("XXX "+nome+" acertou a água XXX");
+                        Thread.sleep(1000);
                     }
-                    for(int l = 0; l<enemy.map.length;l++){
-                        for(int c = 0; c<enemy.map[0].length;c++){
-                            if(l == linha && c == colunaSelec){
-                                if(map[l][c] == '~'){
-                                    map[l][c] = 'X';
-                                    System.out.println("XXX "+nome+" acertou a água XXX");
-                                    Thread.sleep(1000);
-                                }
-                                else if(map[l][c] == 'B'){
-                                    map[l][c] = '*';
-                                    System.out.println("*** "+nome+" acertou um barco ***");
-                                    Thread.sleep(500);
-                                    countBarco++;
-                                    if(countBarco == 20){
-                                       System.out.println("\t------ "+nome+" GANHOU O JOGO\t------"); 
-                                       Thread.sleep(1000);
-                                       flagWin = true;
-                                    }
-                                }
-                            }
-                            else System.out.println("Localização Inválida");
+                    else if(enemy.map[l][c] == 'B'){
+                        enemy.map[l][c] = '*';
+                        System.out.println("*** "+nome+" acertou um barco ***");
+                        Thread.sleep(500);
+                        countBarco++;
+                        if(countBarco == 20){
+                            System.out.println("\t------ "+nome+" GANHOU O JOGO\t------");
                             Thread.sleep(1000);
+                            flagWin = true;
                         }
                     }
-                    
-                }while(!flagWin);
+                }
+            }
+        } return flagWin;
     }
 
-    public void atacarRandom (Player enemy) throws InterruptedException{
+    public boolean atacarRandom (Player enemy) throws InterruptedException{
         boolean flagWin = false;
         int countBarco = 0;
         Random aleatorio = new Random();
@@ -205,23 +186,25 @@ public class Player {
         for(int l = 0; l<enemy.map.length;l++){
             for(int c = 0; c<enemy.map[0].length;c++){           
                 if(l == linha && c == colunaSelec){
-                    if(map[l][c] == '~'){
-                        map[l][c] = 'X';
+                    if(enemy.map[l][c] == '~'){
+                        enemy.map[l][c] = 'X';
                         System.out.println("XXX "+nome+" acertou a água XXX");
                         Thread.sleep(1000);
                     }
-                    else if(map[l][c] == 'B'){
-                        map[l][c] = '*';
+                    else if(enemy.map[l][c] == 'B'){
+                        enemy.map[l][c] = '*';
                         System.out.println("*** "+nome+" acertou um barco ***");
                         Thread.sleep(500);
                         countBarco++;
                         if(countBarco == 20){
                             System.out.println("\t------ "+nome+" GANHOU O JOGO\t------"); 
                             Thread.sleep(1000);
+                            flagWin = true;
                         }
                     }
                 }
             }            
-        }
+        } return flagWin;
     }
+
 }
