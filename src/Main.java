@@ -17,7 +17,7 @@ public class Main {
                 char colunaChar = ler.next().charAt(0);
                 colunaChar = Character.toUpperCase(colunaChar);
                 for (int i = 0; i<player.coluna.length;i++){
-                    if (colunaChar == player.coluna[i]) coluna = i;
+                    if (colunaChar == player.coluna[i]) coluna = i; //atribui o valor correspondente à letra lida
                 }
                 System.out.println("Escolha a posição do návio");
                 System.out.println("Horizontal [1]  ||  Vertical [2]");
@@ -26,7 +26,8 @@ public class Main {
                 if (player.setNavio(linha, coluna, posicao, tipoNavio)) { // se atribuir corretamente retorna true
                     flagEnd = true; // encerra o loop
                 } else { // se houver algum erro retorna false e retoma o loop
-                    System.out.println("Localização Inválida!!");
+                    System.out.println("Localização inválida!!");
+                    System.out.println("Posicione novamente!!");
                     Thread.sleep(1000); // pausa o prompt
                 }
             }
@@ -56,8 +57,8 @@ public class Main {
             int tipoNavio = ler.nextInt();
             switch (tipoNavio){
                 case 4 ->{
-                    alocarNavio(navioGG,tipoNavio,player);
-                    if (navioGG != 0 ) navioGG--;
+                    alocarNavio(navioGG,tipoNavio,player); //chama o método alocarNavio
+                    if (navioGG != 0 ) navioGG--; //caso retorne true, diminui um barco para atribuir
                 }
                 case 3 ->{
                     alocarNavio(navioG,tipoNavio,player);
@@ -104,10 +105,14 @@ public class Main {
                     case 'a','A' ->  player1.setMapRandom(); //define aleatoriamente o mapa do jogador
                 }
                 System.out.println("\t------ HORA DE ATACAR ------");
+                int winPlayer1 = 0; //flag barcos atingidos
+                int winBot = 0;
                 do {
-                    player1.atacar(bot);
-                    bot.atacarRandom (player1);
-                }while( !player1.atacar(bot) || !bot.atacarRandom (player1) );
+                    if (player1.atacar(bot)) winPlayer1++; //se retornar true atribui +1 à flag
+                    if (bot.atacarRandom(player1)) winBot++;
+                    if (winPlayer1==20) System.out.println("\t------ "+player1.nome.toUpperCase()+" GANHOU O JOGO\t------");
+                    if (winBot==20) System.out.println("\t------ "+bot.nome.toUpperCase()+" GANHOU O JOGO\t------");
+                }while(winPlayer1!=20 && winBot!= 20); //funciona enquanto ngm afundar os 20 barcos
             }
             case 'm','M' -> {
                 System.out.println("\t------ MODO MULTIPLAYER ------ ");
@@ -136,13 +141,16 @@ public class Main {
                     }
                 }
                 System.out.println("\t------ HORA DE ATACAR ------");
+                int winPlayer1 = 0;
+                int winPlayer2 = 0;
                 do {
-                    player1.atacar(player2);
-                    player2.atacar(player1);
-                }while( !player1.atacar(player2) || !player2.atacarRandom (player1) );
+                    if (player1.atacar(player2)) winPlayer1++;
+                    if (player2.atacar(player1)) winPlayer2++;
+                    if (winPlayer1==20) System.out.println("\t------ "+player1.nome.toUpperCase()+" GANHOU O JOGO\t------");
+                    if (winPlayer2==20) System.out.println("\t------ "+player2.nome.toUpperCase()+" GANHOU O JOGO\t------");
+                }while(winPlayer1!=20 && winPlayer2!= 20);
             }
             default -> System.out.println("opção Inválida!");
         }
     }
-
 }
