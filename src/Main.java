@@ -107,9 +107,23 @@ public class Main {
                 System.out.println("\t------ HORA DE ATACAR ------");
                 int winPlayer1 = 0; //flag barcos atingidos
                 int winBot = 0;
+                boolean player1Hit = false;
+                boolean botHit = false;
                 do {
-                    if (player1.atacar(bot)) winPlayer1++; //se retornar true atribui +1 à flag
-                    if (bot.atacarRandom(player1)) winBot++;
+                    do{
+                           if (player1.atacar(bot)) {
+                               winPlayer1++;
+                               player1Hit = true;
+                           }
+                           else player1Hit = false;
+                       }while(player1Hit); 
+                    do{
+                           if (bot.atacarRandom(player1)) {
+                               winBot++;
+                               botHit = true;
+                           }
+                           else botHit = false;
+                       }while(botHit);
                     if (winPlayer1==20) System.out.println("\t------ "+player1.nome.toUpperCase()+" GANHOU O JOGO\t------");
                     if (winBot==20) System.out.println("\t------ "+bot.nome.toUpperCase()+" GANHOU O JOGO\t------");
                 }while(winPlayer1!=20 && winBot!= 20); //funciona enquanto ngm afundar os 20 barcos
@@ -143,9 +157,23 @@ public class Main {
                 System.out.println("\t------ HORA DE ATACAR ------");
                 int winPlayer1 = 0;
                 int winPlayer2 = 0;
-                do {
-                    if (player1.atacar(player2)) winPlayer1++;
-                    if (player2.atacar(player1)) winPlayer2++;
+                boolean player1Hit = false;
+                boolean player2Hit = false;
+                do{
+                    do{
+                           if (player1.atacar(player2)) {
+                               winPlayer1++;
+                               player1Hit = true;
+                           }
+                           else player1Hit = false;
+                       }while(player1Hit);  
+                    do{
+                           if (player2.atacar(player1)) {
+                               winPlayer2++;
+                               player2Hit = true;
+                           }
+                           else player2Hit = false;
+                       }while(player2Hit); 
                     if (winPlayer1==20) System.out.println("\t------ "+player1.nome.toUpperCase()+" GANHOU O JOGO\t------");
                     if (winPlayer2==20) System.out.println("\t------ "+player2.nome.toUpperCase()+" GANHOU O JOGO\t------");
                 }while(winPlayer1!=20 && winPlayer2!= 20);
